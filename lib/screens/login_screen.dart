@@ -3,6 +3,7 @@ import 'package:flash_chat/components/rounded_button.dart';
 import 'package:flash_chat/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import '../components/error_dialog.dart';
 import 'chat_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
       body: ModalProgressHUD(
         inAsyncCall: showSpinner,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.0),
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -48,7 +49,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   email = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
+                decoration:
+                    kTextFieldDecoration.copyWith(hintText: 'Enter your email'),
               ),
               const SizedBox(
                 height: 8.0,
@@ -59,30 +61,33 @@ class _LoginScreenState extends State<LoginScreen> {
                 onChanged: (value) {
                   password = value;
                 },
-                decoration: kTextFieldDecoration.copyWith(hintText: 'Enter your password.'),
+                decoration: kTextFieldDecoration.copyWith(
+                    hintText: 'Enter your password.'),
               ),
               const SizedBox(
                 height: 24.0,
               ),
               RoundedButton(
-                  title: 'Log In',
-                  color: Colors.lightBlueAccent,
-                  onPressed: () async {
+                title: 'Log In',
+                color: Colors.lightBlueAccent,
+                onPressed: () async {
+                  setState(() {
+                    showSpinner = true;
+                  });
+                  try {
+                    final user = await _auth.signInWithEmailAndPassword(
+                        email: email, password: password);
+                    Navigator.pushNamed(context, ChatScreen.id);
                     setState(() {
-                      showSpinner = true;
+                      showSpinner = false;
                     });
-                    try {
-                      final user = await _auth.signInWithEmailAndPassword(
-                          email: email, password: password);
-                      Navigator.pushNamed(context, ChatScreen.id);
-                      setState(() {
-                        showSpinner = false;
-                      });
-                    }
-                    catch (e) {
-                      print(e);
-                    }
-                  },
+                  } catch (e) {
+                    setState(() {
+                      showSpinner = false;
+                    });
+                    await showErrorDialog(context, 'Login Fails', 'Login fails, please retry');
+                  }
+                },
               ),
             ],
           ),
