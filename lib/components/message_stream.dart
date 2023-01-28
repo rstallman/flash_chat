@@ -1,16 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flash_chat/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'message_bubble.dart';
 
-
 class MessagesStream extends StatelessWidget {
-
   final FirebaseFirestore firestore;
   final User loggedInUser;
 
-  const MessagesStream({required this.firestore, required this.loggedInUser});
+  const MessagesStream({super.key, required this.firestore, required this.loggedInUser});
 
   @override
   Widget build(BuildContext context) {

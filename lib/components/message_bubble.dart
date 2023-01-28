@@ -6,7 +6,7 @@ class MessageBubble extends StatelessWidget {
   final String text;
   final bool isMe;
 
-  MessageBubble({required this.text, required this.sender, required this.isMe});
+  const MessageBubble({super.key, required this.text, required this.sender, required this.isMe});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +14,7 @@ class MessageBubble extends StatelessWidget {
       padding: const EdgeInsets.all(10.0),
       child: Column(
         crossAxisAlignment:
-        isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+            isMe ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
             sender,

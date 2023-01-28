@@ -85,7 +85,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     setState(() {
                       showSpinner = false;
                     });
-                    await showErrorDialog(context, 'Login Fails', 'Login fails, please retry');
+                    await showErrorDialog(
+                        context, 'Login Fails', 'Login fails, please retry');
                   }
                 },
               ),
